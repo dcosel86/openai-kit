@@ -27,9 +27,8 @@ extension Speech.Voice: Codable {}
 
 extension Speech {
     public enum TextToSpeechModel: String {
-      case tts
-      case tts_1 = "tts-1"
-      case tts_1_hd = "tts-1-hd"
+      case tts = "tts-1"
+      case ttsHD = "tts-1-hd"
     }
 }
 
