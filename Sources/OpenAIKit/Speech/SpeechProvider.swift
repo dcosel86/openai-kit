@@ -24,7 +24,7 @@ public struct SpeechProvider {
 
       let request = try CreateSpeechRequest(
         model: model,
-        text: text,
+        input: text,
         voice: voice
       )
       

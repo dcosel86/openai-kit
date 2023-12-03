@@ -9,12 +9,12 @@ struct CreateSpeechRequest: Request {
 
     init(
         model: Speech.TextToSpeechModel,
-        text: String,
+        input: String,
         voice: Speech.Voice
     ) throws {
         let body = Body(
             model: model,
-            text: text,
+            input: input,
             voice: voice
         )
 
@@ -25,20 +25,20 @@ struct CreateSpeechRequest: Request {
 extension CreateSpeechRequest {
     struct Body: Encodable {
         let model: Speech.TextToSpeechModel
-        let text: String
+        let input: String
         let voice: Speech.Voice
 
         enum CodingKeys: CodingKey {
             case model
-            case text
+            case input
             case voice
         }
 
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(model, forKey: .model)
-            if !text.isEmpty {
-                try container.encode(text, forKey: .text)
+            if !input.isEmpty {
+                try container.encode(input, forKey: .input)
             }
             try container.encode(voice, forKey: .voice)
         }
