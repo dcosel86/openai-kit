@@ -4,7 +4,7 @@ import Foundation
 
 struct CreateSpeechRequest: Request {
     let method: HTTPMethod = .POST
-    let path = "v1/audio/speech"
+    let path = "/v1/audio/speech"
     let body: Data?
 
     init(
@@ -37,11 +37,9 @@ extension CreateSpeechRequest {
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(model, forKey: .model)
-
             if !text.isEmpty {
                 try container.encode(text, forKey: .text)
             }
-            try container.encode(model, forKey: .model)
             try container.encode(voice, forKey: .voice)
         }
     }
