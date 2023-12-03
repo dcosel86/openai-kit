@@ -20,7 +20,7 @@ public struct SpeechProvider {
       model: Speech.TextToSpeechModel = .tts,
       text: String,
       voice: Speech.Voice = .alloy
-    ) async throws -> Data {
+    ) async throws -> URL {
 
       let request = try CreateSpeechRequest(
         model: model,
@@ -28,8 +28,7 @@ public struct SpeechProvider {
         voice: voice
       )
       
-      return try await requestHandler.perform(request: request)
-
+      return try await requestHandler.downloadToUrl(fromRequest: request)
     }
 }
 

@@ -18,7 +18,38 @@ struct NIORequestHandler: RequestHandler {
         self.configuration = configuration
         self.decoder = decoder
     }
-    
+
+    func downloadToUrl(fromRequest request: Request) async throws -> URL {
+      var headers = configuration.headers
+      headers.add(contentsOf: request.headers)
+
+      let urlString = try generateURL(for: request)
+      let urlRequest = URLRequest(url: URL(string: urlString)!)
+      urlRequest.httpMethod = request.httpMethod
+      headers.headers.forEach({ header in urlRequest.addValue(header.1, forHTTPHeaderField: header.0) })
+      urlRequest.addValue("", forHTTPHeaderField: "")
+      urlRequest.httpBody = request.body
+
+      let (data, response) = try await URLSession.shared.data(for: urlRequest)
+
+
+      let fileURL = try! FileManager.default.url(
+        for: .documentDirectory,
+        in: .userDomainMask,
+        appropriateFor: nil,
+        create: false
+      ).appendingPathComponent("voice.mp3")
+
+      do {
+        try data.write(to: fileURL, options: .atomic)
+      } catch {
+        print("Error")
+        print(error)
+      }
+
+      return fileURL
+    }
+
     func perform<T: Decodable>(request: Request) async throws -> T {
         var headers = configuration.headers
         
